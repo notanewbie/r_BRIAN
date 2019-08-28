@@ -1,5 +1,6 @@
 import os
 import urllib2
+import unicodedata
 def harshChars(t):
     t = parseChars(t);
     t = t.replace("'", "")
@@ -17,6 +18,7 @@ def parseChars(t):
         t = t.replace("â€™", "'");
     except UnicodeDecodeError:
         t = t.replace("â€™", "'");
+    t = t.replace("&#x200B;", "");
     t = t.replace("?", "")
     t = t.replace('"', "")
     t = t.replace('PH/', "")
@@ -71,18 +73,16 @@ def learn(threads):
             if i > 0:
                 statements.append(threads[a].split('<div class="md"><p>')[i].split('</p>')[0]);
                 if i > 1:
-                    import HTMLParser;
-                    parser = HTMLParser.HTMLParser();
                     try:
-                        statements[z] = parser.unescape(statements[z]);
-                    except TypeError:
-                        statements[z] = statements[z].replace("â€™", "'");
+                        print statements[z];
+                        statements[z] = parseChars(statements[z])
+                        print statements[z];
+                        Respo = open("PH/" + harshChars(statements[z - 1])[:200] + ".ph", "w");
+                        Respo.write(statements[z].replace(u'\u200b', ""));
+                        file.close(Respo);
                     except UnicodeDecodeError:
-                        statements[z] = statements[z].replace("â€™", "'");
-                    print statements[z];
-                    Respo = open("PH/" + harshChars(statements[z - 1])[:200] + ".ph", "w");
-                    Respo.write(statements[z]);
-                    file.close(Respo);
+                        Respo.write(parseChars(statements[z]));
+                        file.close(Respo);
                     print "";
                     print i;
                 z = z + 1;
@@ -98,63 +98,14 @@ def learnSub(dis):
         except AttributeError:
             g = g;
         g = g + 1;
-#learnSub("https://www.reddit.com/r/AskReddit/")
-#learnSub("https://www.reddit.com/r/24_Show/")
-#learnSub("https://www.reddit.com/r/24Show/")
-#learnSub("https://www.reddit.com/r/FanTheory/")
-#learnSub("https://www.reddit.com/r/FortniteBattleRoyale/")
-#learnSub("https://www.reddit.com/r/FORTnITE/")
-#learnSub("https://www.reddit.com/r/FortNiteBR/")
-#learnSub("https://www.reddit.com/r/gadgets/")
-#learnSub("https://www.reddit.com/r/google/")
-#learnSub("https://www.reddit.com/r/googleassistant/")
-#learnSub("https://www.reddit.com/r/GooglePixel/")
-#learnSub("https://www.reddit.com/r/gravityfalls/")
-#learnSub("https://www.reddit.com/r/gumball/")
-#learnSub("https://www.reddit.com/r/homeautomation/")
-#learnSub("https://www.reddit.com/r/Hulu/")
-#learnSub("https://www.reddit.com/r/InfinityTrain/")
-#learnSub("https://www.reddit.com/r/iphone/")
-#learnSub("https://www.reddit.com/r/JakePaul/")
-#learnSub("https://www.reddit.com/r/LazorWulf/")
-#learnSub("https://www.reddit.com/r/learnpython/")
-#learnSub("https://www.reddit.com/r/LouderWithCrowder/")
-#learnSub("https://www.reddit.com/r/Martingarrix/")
-#learnSub("https://www.reddit.com/r/marvelstudios/")
-#learnSub("https://www.reddit.com/r/Mastodon/")
-#learnSub("https://www.reddit.com/r/mkbhd/")
-#learnSub("https://www.reddit.com/r/motorola/")
-#learnSub("https://www.reddit.com/r/MrRobot/")
-#learnSub("https://www.reddit.com/r/NCAAFBseries/")
-#learnSub("https://www.reddit.com/r/NCAAFOOTBALL14/")
-#learnSub("https://www.reddit.com/r/Piracy/")
-#learnSub("https://www.reddit.com/r/PewdiepieSubmissions/")
-#learnSub("https://www.reddit.com/r/PS4/")
-#learnSub("https://www.reddit.com/r/PS5/")
-#learnSub("https://www.reddit.com/r/Python/")
-#learnSub("https://www.reddit.com/r/radio/")
-#learnSub("https://www.reddit.com/r/raspberry_pi/")
-#learnSub("https://www.reddit.com/r/rickandmorty/")
-#learnSub("https://www.reddit.com/r/Roku/")
-#learnSub("https://www.reddit.com/r/Saberspark/")
-#learnSub("https://www.reddit.com/r/ShouldIbuythisgame/")
-#learnSub("https://www.reddit.com/r/Skullcandy/")
-#learnSub("https://www.reddit.com/r/spotify/")
-#learnSub("https://www.reddit.com/r/StraightTalk/")
-#learnSub("https://www.reddit.com/r/technology/")
-#learnSub("https://www.reddit.com/r/teenagers/")
-#learnSub("https://www.reddit.com/r/teenagersnew/")
-#learnSub("https://www.reddit.com/r/television/")
-#learnSub("https://www.reddit.com/r/TicPods/")
-#learnSub("https://www.reddit.com/r/TOR/")
-#learnSub("https://www.reddit.com/r/Twitch/")
-#learnSub("https://www.reddit.com/r/Unboxtherapy/")
-#learnSub("https://www.reddit.com/r/UniversalProfile/")
-#learnSub("https://www.reddit.com/r/unpopularopinion/")
-#learnSub("https://www.reddit.com/r/UpliftingNews/")
-#learnSub("https://www.reddit.com/r/vidgo/")
-#learnSub("https://www.reddit.com/r/xbox/")
-#learnSub("https://www.reddit.com/r/youtube/")
-#learnSub("https://www.reddit.com/r/StarWars/")
-#learnSub("https://www.reddit.com/r/starwarscanon/")
-#learnSub("https://www.reddit.com/r/starwarsspeculation/")
+subs = ["https://www.reddit.com/r/unpopularopinion/", "https://www.reddit.com/r/AskReddit/", "https://www.reddit.com/r/24_Show/", "https://www.reddit.com/r/24Show/", "https://www.reddit.com/r/FanTheory/", "https://www.reddit.com/r/FortniteBattleRoyale/", "https://www.reddit.com/r/FORTnITE/", "https://www.reddit.com/r/FortNiteBR/", "https://www.reddit.com/r/gadgets/", "https://www.reddit.com/r/google/", "https://www.reddit.com/r/googleassistant/", "https://www.reddit.com/r/GooglePixel/", "https://www.reddit.com/r/gravityfalls/", "https://www.reddit.com/r/gumball/", "https://www.reddit.com/r/homeautomation/", "https://www.reddit.com/r/Hulu/", "https://www.reddit.com/r/InfinityTrain/", "https://www.reddit.com/r/iphone/", "https://www.reddit.com/r/JakePaul/", "https://www.reddit.com/r/LazorWulf/", "https://www.reddit.com/r/learnpython/", "https://www.reddit.com/r/LouderWithCrowder/", "https://www.reddit.com/r/Martingarrix/", "https://www.reddit.com/r/marvelstudios/", "https://www.reddit.com/r/Mastodon/", "https://www.reddit.com/r/mkbhd/", "https://www.reddit.com/r/motorola/", "https://www.reddit.com/r/MrRobot/", "https://www.reddit.com/r/NCAAFBseries/", "https://www.reddit.com/r/NCAAFOOTBALL14/", "https://www.reddit.com/r/Piracy/", "https://www.reddit.com/r/PewdiepieSubmissions/", "https://www.reddit.com/r/PS4/", "https://www.reddit.com/r/PS5/", "https://www.reddit.com/r/Python/", "https://www.reddit.com/r/radio/", "https://www.reddit.com/r/raspberry_pi/", "https://www.reddit.com/r/rickandmorty/", "https://www.reddit.com/r/Roku/", "https://www.reddit.com/r/Saberspark/", "https://www.reddit.com/r/ShouldIbuythisgame/", "https://www.reddit.com/r/Skullcandy/", "https://www.reddit.com/r/spotify/", "https://www.reddit.com/r/StraightTalk/", "https://www.reddit.com/r/technology/", "https://www.reddit.com/r/teenagers/", "https://www.reddit.com/r/teenagersnew/", "https://www.reddit.com/r/television/", "https://www.reddit.com/r/TicPods/", "https://www.reddit.com/r/TOR/", "https://www.reddit.com/r/Twitch/", "https://www.reddit.com/r/Unboxtherapy/", "https://www.reddit.com/r/UniversalProfile/", "https://www.reddit.com/r/UpliftingNews/", "https://www.reddit.com/r/vidgo/", "https://www.reddit.com/r/xbox/", "https://www.reddit.com/r/youtube/", "https://www.reddit.com/r/StarWars/", "https://www.reddit.com/r/starwarscanon/", "https://www.reddit.com/r/starwarsspeculation/"];
+x = 0;
+while(len(subs) > x):
+    learnSub(subs[x]);
+    print "";
+    print "Parsing of comments from " + subs[x] + " completed sucessfully.";
+    print "";
+    x = x + 1;
+#except UnicodeEncodeError:
+#print "No wubba-lubba-dub-dub here broh.";
+#print "Yikes. Parsing r/unpopularopinion failed epicly.";
